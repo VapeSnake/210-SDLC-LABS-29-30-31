@@ -1,0 +1,19 @@
+My project is a medieval fantasy setting simulator that tracks various parties of adventurers throughout a large region that reacts to the success and
+failure of these inspirational or tragic heroes over the course of 48 years.
+This software is projected to successfully cater to an audience of video game enthusiasts that gravitate towards medieval fantasy settings
+and simulator mechanics.
+
+Implementation:
+std::Maps will be used to track all relevant information for our parties. Keys will be used for storing the name of the groups,
+and the values will be std::arrays of 3 lists for each group to encompass [Party members], [Loot], and [Active quests]. 
+The initial period at the start of the program sets up a default state of the kingdom in terms of prosperity and safety.
+During each period, I'm thinking roughly a month each, I want there to be random events that affect the lists of 
+each party; things like party member casualties/ leaving/joining, loot gained and how it affects party strength, 
+and Active quests being completed, failed, and new quests acquired.
+
+After each period, the prosperity and safety of the kingdom gets affected by the success and failure of these parties. 
+
+Simulated Events:
+Events for each period are random and will include combat event which introduces risks to parties and their members, ranging from flawless victories to
+devastating party losses. Other events include quest events which can cause postive or negative modifiers for completion of quests.
+Finally, the prosperity and safety variables of the kingdom will be connected to kingdom events that introduces spoils and misfortunes for the parties.

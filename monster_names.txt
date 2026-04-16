@@ -1,0 +1,30 @@
+Goblin
+Orc
+Troll
+Dire Wolf
+Wraith
+Skeleton
+Zombie
+Ogre
+Harpy
+Basilisk
+Wyvern
+Shadow Drake
+Fire Elemental
+Ice Golem
+Bandit
+Cultist
+Dark Knight
+Giant Spider
+Vampire
+Lich
+Werebear
+Slime
+Stone Guardian
+Specter
+Swamp Hag
+Feral Gnoll
+Dread Serpent
+Cave Horror
+Blood Fiend
+Void Spawn
