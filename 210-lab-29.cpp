@@ -156,9 +156,12 @@ int main()
         After processing the events for all parties, we will call the displayEvent function to show the
         current state of the world, including all parties and the kingdom's prosperity and safety.
     */
-
-    kingdomEvent(2, prosperity, safety); // Test kingdom event function by simulating event number 2 which should increase prosperity by 10.
-    displayEvent(2, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
+   for (int time = 0; time < TIME_PERIODS; time++)
+    {
+        int event = randomEvent(); // Generate a random event number to simulate an event occurring in our world.
+    kingdomEvent(event, prosperity, safety); // Test kingdom event function by simulating the generated event.
+    displayEvent(event, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
+    } // End of simulation loop.
 
     return 0;
 }
@@ -190,16 +193,16 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
         eventDescription = "A new adventure has begun!";
         break;
     case 2:
-        eventDescription = "The kingdom's garrison is fortified.";
+        eventDescription = "The kingdom's garrison is fortified.\n Safety has increased!";
         break;
     case 3:
-        eventDescription = "A famine has struck the land!";
+        eventDescription = "A famine has struck the land!\n Prosperity has decreased!";
         break;
     case 4:
-        eventDescription = "A band of marauders is terrorizing the countryside!";
+        eventDescription = "A band of marauders is terrorizing the countryside!\n Safety and prosperity have decreased!";
         break;
     case 5:
-        eventDescription = "A bountiful harvest has increased the kingdom's wealth!";
+        eventDescription = "A bountiful harvest has increased the kingdom's wealth!\n Prosperity has increased!";
         break;
     default:
         eventDescription = "Nothing significant has occurred.";
@@ -266,17 +269,17 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
     
     switch (eventNum)
     {
-    case 2:
-        prosperity += 10; // Example of an event that increases prosperity.
+    case 2: // Garrison fortified event.
+        safety += 10; // Example of an event that increases safety.
         break;
-    case 3:
-        safety -= 5; // Example of an event that decreases safety.
+    case 3: // Famine event.
+        prosperity -= 15; // Example of an event that decreases prosperity.
         break;
-    case 4:
+    case 4: // Marauders event.
         prosperity -= 10; // Example of an event that decreases prosperity.
         safety -= 5; // Example of an event that decreases safety.
         break;
-        case 5:
+        case 5: // Bountiful harvest event.
         prosperity += 15; // Example of an event that increases prosperity.
     default:
         // No change to prosperity or safety for other events.

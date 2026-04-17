@@ -1,0 +1,8 @@
+---Bugs---
+
+---Updates---
+- kingdomEvent() modifies prosperity and safety by reference.
+- displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
+- Updated displayEvent() with dashes to visually tidy display of data during each period.
+- Added randomEvent() function that will be used for each time period to generate number that display, kingdom, and quest functions will use to modify
+  world and/or party information.
