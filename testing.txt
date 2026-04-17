@@ -18,3 +18,11 @@ Unit testing:
 3. Call the displayEvent() function with 1 as the eventNum, with the safety, prosperity, and Map as arguments to display
    the first switch case displaying the beginning of the world session with the first parties initialized above and
    default state of prosperity and safety integers set to 50 each. 
+// kingdomEvent()
+4. Test that this function modifies safety and prosperity variables when called. Use 2 as the eventNum argument, as well as
+   safety and prosperity variables. If successful, test with other switch cases and observe that each eventNum matches integers
+   respective modification to prosperity and safety.
+// randomEvent() and test of time periods.
+5. Create a for loop that repeats 3 times (use our const int TIME_PERIODS). During each loop, create a variable that is initialized with
+   our randomEvent() function. Value between 2-5 should be returned, verify by displaying value generated before returning value out of function.
+   Use variable as argument for both kingdomEvent() and displayEvent(). Verify that the correct modifcation 

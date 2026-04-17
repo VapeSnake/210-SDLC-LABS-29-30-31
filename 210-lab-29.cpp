@@ -285,6 +285,7 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
         break;
         case 5: // Bountiful harvest event.
         prosperity += 15; // Example of an event that increases prosperity.
+        break;
     default:
         // No change to prosperity or safety for other events.
         break;
