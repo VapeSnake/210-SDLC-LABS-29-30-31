@@ -3,6 +3,7 @@
 #include <random>    // for random number generation for our simulated events.
 #include <map>       // To store our parties as keys.
 #include <array>     // To store our lists of party members, their loot, and their active quests as values for our map.
+#include <vector>    // To store our party names, member names, loot items, quests, and events loaded from files for random assignment.
 #include <list>      // Lists are great for the insertion/deletion of party members, loot items, and quests.
 #include <algorithm> // for sorting and other algorithms we might want to use on our lists. Debatable if we will use this but nice for now in case.
 #include <fstream>   // for file input/output
@@ -65,6 +66,12 @@ int main()
     loadParties("quests.txt", quests);
     loadParties("events.txt", events);
 
+    if (partyNames.empty() || partyMembers.empty() || lootItems.empty() || quests.empty() || events.empty())
+    {
+        cerr << "Error: One or more files failed to load. Please check the file paths and contents." << endl;
+        return 1; // Exit with an error code if any file failed to load.
+    }
+
     random_device rd;  // Random number generator for assigning party members, loot, and quests randomly.
     mt19937 gen(rd()); // Random number generator.
 
@@ -98,8 +105,8 @@ int main()
 
         if (!parties.empty())
         { // Check if the map is not empty before trying to display.
-            cout << "Displaying initial state of the world:" << endl;
-            displayEvent(0, prosperity, safety, parties); // Display the initial state of the world.
+            cout << "---Displaying initial state of the world---\n" << endl;
+            displayEvent(1, prosperity, safety, parties); // Display the initial state of the world.
         }
          else
         {
@@ -168,7 +175,7 @@ void loadParties(const string &filename, vector<string> &v)
     inFile.close();
 }
 
-string displayEvent(int eventNum, int &prosperity, int &safety, map<string, array<list<string>, 3>> &parties)
+string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties)
 {
     // This function will display the current state of the world, including all parties and the kingdom's prosperity and safety.
     // For now, we will just print the event description. We can expand this later to include more detailed information about parties and kingdom status.
@@ -190,17 +197,40 @@ string displayEvent(int eventNum, int &prosperity, int &safety, map<string, arra
         eventDescription = "An unknown event has occurred.";
     }
     cout << "Event: " << eventDescription << endl;
-    cout << "Current state of the world:" << endl;
-    // Here we would add code to display the current state of the world, including all parties
-    // and the kingdom's prosperity and safety. This can be done by iterating through the parties map and printing out the relevant information.
+    cout << "---Current state of the world---" << endl;
+    cout << "Kingdom Prosperity: " << prosperity << endl;
+    cout << "Kingdom Safety: " << safety << endl;
+        cout << "---Parties---" << endl;
+    for (const auto &party : parties)
+    {
+        cout << "Party Name: " << party.first << endl;
+        cout << "Members: ";
+        for (const auto &member : party.second[0])
+        {
+            cout << member << " ";
+        }
+        cout << endl;
+        cout << "Loot: ";
+        for (const auto &loot : party.second[1])
+        {
+            cout << loot << " ";
+        }
+        cout << endl;
+        cout << "Quests: ";
+        for (const auto &quest : party.second[2])
+        {
+            cout << quest << " ";
+        }
+        cout << "\n---------- " << endl
+             << endl;
+    }
 
     return eventDescription;
 }
 
 void combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
-    // Create a randomized int to determine outcome between 1-5 to use as event
-    int randomChance = rand() % 100; // Random chance for combat outcome.
+   
 }
 
 void questEvent(int eventNum, map<string, array<list<string> &, 3>> &parties)
@@ -238,10 +268,10 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
     */
 }
 
-void randomEvent()
+int randomEvent()
 {
-    // This function will generate a random event number to simulate the occurrence of events in our world.
-    int eventNum = rand() % NUM_EVENTS + 1; // Generate a random event number between 1 and NUM_EVENTS.
+    // This function will generate a random event number between 2 and NUM_EVENTS. Event 1 will always be used for initial event at start of program.
+    int eventNum = rand() % (NUM_EVENTS - 1) + 2; // Generate a random event number between 2 and NUM_EVENTS.
     return eventNum;
 }
 
