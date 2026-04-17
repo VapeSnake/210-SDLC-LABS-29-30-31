@@ -29,12 +29,13 @@ int main()
     int prosperity = 50; // Initial prosperity of the kingdom.
     int safety = 50;     // Initial safety of the kingdom.
 
-    // We can store our txt files into vectors of strings to randomly assign them to parties in the program.
+    // We can store our txt files into vectors of strings to randomly assign them to parties in the program and to hold display info like events.
 
     vector<string> partyNames;
     vector<string> partyMembers;
     vector<string> lootItems;
     vector<string> quests;
+    vector<string> events;
 
     /*
     Our first step is to load our world and parties from a file. Our kingdom only has two variables to worry about for now: prosperity and safety.
@@ -57,18 +58,27 @@ int main()
     loadParties("p_member_names.txt", partyMembers);
     loadParties("loot.txt", lootItems);
     loadParties("quests.txt", quests);
+    loadParties("events.txt", events);
 
-    for (int i = 0; i < 1; i++)
-    { // We will only load one party for testing purposes. This can be adjusted to load more parties as needed.
-        string name = partyNames[i];
-        parties[name] = {list<string>(), list<string>(), list<string>()}; // Creates map with party names and empty lists.
+    random_device rd;  // Random number generator for assigning party members, loot, and quests randomly.
+    mt19937 gen(rd()); // Random number generator.
+
+    for (int i = 0; i < 3; i++)
+    { // Load 3 parties into the map with empty lists for members, loot, and quests.
+        shuffle(partyNames.begin(), partyNames.end(), gen); // Shuffle the party names to assign them randomly.
+        parties[partyNames[i]] = array<list<string>, 3>(); // Initialize the array of lists for each party.
     }
 
     auto it = parties.begin(); // Get an iterator to the first party in the map.
     if (it != parties.end())
     { // Check if the map is not empty.
         for (int j = 0; j < 3; j++)
-        {                                             // Load 3 members, 3 loot items, and 2 quests for the first party.
+        {        
+            // Load 3 members, 3 loot items, and 2 quests for the first party.
+            shuffle(partyMembers.begin(), partyMembers.end(), gen); // Shuffle the party members to assign them randomly.
+            shuffle(lootItems.begin(), lootItems.end(), gen);       // Shuffle the loot items to assign them randomly.
+            shuffle(quests.begin(), quests.end(), gen);             // Shuffle the quests to assign them randomly.
+            
             it->second[0].push_back(partyMembers[j]); // Add members to the party's member list.
             it->second[1].push_back(lootItems[j]);    // Add loot items to the party's loot list.
             if (j < 2)
