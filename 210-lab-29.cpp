@@ -9,19 +9,24 @@
 
 using namespace std;
 
-const int NUM_EVENTS = 25; // For alpha, we will just use 3 periods to test change in our world.
+const int TIME_PERIODS = 3; // We will simulate 3 time periods in our world.
+const int NUM_EVENTS = 5; // For alpha, we will just have 5 events to test change in our world.
+const int MAX_PARTY_SIZE = 4; // Max party size of 4 members.
+const int MAX_LOOT_SIZE = 10; // Max loot size of 10 items.
+const int MAX_QUEST_SIZE = 3; // Max quest size of 3 quests.
 
 // Prototype functions for this program.
 //  File reading function. This function will read party information from a file and populate the parties map.
 void loadParties(const string &filename, vector<string> &v);
 
 // Display function.
-string displayEvent(const int eventNum); // Function receives event number and returns string based on number.
+string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
 void questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);        // This function simulates a quest event.
 void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties); // This function uses event numbers to modify parties and kingdom.
-void combat(int eventNum, map<string, array<list<string>, 3>> &parties);            // This function simulates combat which can remove members and
+void combat(int eventNum, map<string, array<list<string>, 3>> &parties);            // Can remove members and add/delete loot
+int randomEvent(); // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
 {
@@ -88,7 +93,7 @@ int main()
             }
         }
     }
-// 
+
         cout << "Initial party setup complete. Parties, members, loot, and quests have been loaded." << endl;
 
         if (!parties.empty())
@@ -163,7 +168,7 @@ void loadParties(const string &filename, vector<string> &v)
     inFile.close();
 }
 
-string displayEvent(const int eventNum, int &prosperity, int &safety, map<string, array<list<string>, 3>> &parties)
+string displayEvent(int eventNum, int &prosperity, int &safety, map<string, array<list<string>, 3>> &parties)
 {
     // This function will display the current state of the world, including all parties and the kingdom's prosperity and safety.
     // For now, we will just print the event description. We can expand this later to include more detailed information about parties and kingdom status.
@@ -194,13 +199,8 @@ string displayEvent(const int eventNum, int &prosperity, int &safety, map<string
 
 void combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
-    /*
-     This function will simulate combat based on the event number. It can remove members and loot from parties.
-     if random chance triggers
-       if party has members
-    =        remove a member from the party's member list based on the event number (e.g., eventNum % partyMembers.size())
-         displayEvent("Member was lost in combat!"); -- We can expand this later to include the member's name and the party they belonged to.
-    */
+    // Create a randomized int to determine outcome between 1-5 to use as event
+    int randomChance = rand() % 100; // Random chance for combat outcome.
 }
 
 void questEvent(int eventNum, map<string, array<list<string> &, 3>> &parties)
@@ -236,6 +236,13 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
         displayEvent("The kingdom's safety has decreased!"); -- We can expand this later to include more details about the event.
 
     */
+}
+
+void randomEvent()
+{
+    // This function will generate a random event number to simulate the occurrence of events in our world.
+    int eventNum = rand() % NUM_EVENTS + 1; // Generate a random event number between 1 and NUM_EVENTS.
+    return eventNum;
 }
 
 //NOTES:
