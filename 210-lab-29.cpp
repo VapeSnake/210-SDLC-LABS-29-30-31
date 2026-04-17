@@ -157,6 +157,9 @@ int main()
         current state of the world, including all parties and the kingdom's prosperity and safety.
     */
 
+    kingdomEvent(2, prosperity, safety); // Test kingdom event function by simulating event number 2 which should increase prosperity by 10.
+    displayEvent(2, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
+
     return 0;
 }
 // Function to load party information from a file into a vector of strings.
@@ -179,7 +182,7 @@ void loadParties(const string &filename, vector<string> &v)
 string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties)
 {
     // This function will display the current state of the world, including all parties and the kingdom's prosperity and safety.
-    // For now, we will just print the event description. We can expand this later to include more detailed information about parties and kingdom status.
+    // All changes to safety and prosperity will come from kingdom and quest events. This will ONLY store descriptions.
     string eventDescription;
     switch (eventNum)
     {
@@ -188,19 +191,15 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
         break;
     case 2:
         eventDescription = "The kingdom's garrison is fortified.";
-        safety += 10; // Example of modifying safety based on an event.
         break;
     case 3:
         eventDescription = "A famine has struck the land!";
-        prosperity -= 5; // Example of modifying prosperity based on an event.
         break;
     case 4:
         eventDescription = "A band of marauders is terrorizing the countryside!";
-        safety -= 10; // Example of modifying safety based on an event.
         break;
     case 5:
         eventDescription = "A bountiful harvest has increased the kingdom's wealth!";
-        prosperity += 15; // Example of modifying prosperity based on an event.
         break;
     default:
         eventDescription = "Nothing significant has occurred.";
@@ -275,10 +274,10 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
         break;
     case 4:
         prosperity -= 10; // Example of an event that decreases prosperity.
-        safety += 5; // Example of an event that increases safety.
+        safety -= 5; // Example of an event that decreases safety.
         break;
         case 5:
-        prosperity += 5; // Example of an event that increases prosperity.
+        prosperity += 15; // Example of an event that increases prosperity.
     default:
         // No change to prosperity or safety for other events.
         break;
