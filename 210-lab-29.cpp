@@ -88,7 +88,7 @@ int main()
             }
         }
     }
-
+// 
         cout << "Initial party setup complete. Parties, members, loot, and quests have been loaded." << endl;
 
         if (!parties.empty())
