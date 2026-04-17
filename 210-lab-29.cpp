@@ -9,14 +9,14 @@
 
 using namespace std;
 
-const int NUM_EVENTS = 25; // We will simulate 25 events for our parties. This can be adjusted as needed.
+const int NUM_EVENTS = 25; // For alpha, we will just use 3 periods to test change in our world.
 
 // Prototype functions for this program.
 //  File reading function. This function will read party information from a file and populate the parties map.
 void loadParties(const string &filename, vector<string> &v);
 
 // Display function.
-string displayEvent(const string &eventDescription); // This function will take an event number and return a string describing the event.
+string displayEvent(const int eventNum); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
 void questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);        // This function simulates a quest event.
 void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
@@ -94,7 +94,7 @@ int main()
         if (!parties.empty())
         { // Check if the map is not empty before trying to display.
             cout << "Displaying initial state of the world:" << endl;
-            displayEvent("Initial state of the world"); // Display the initial state of the world.
+            displayEvent(0, prosperity, safety, parties); // Display the initial state of the world.
         }
          else
         {
@@ -163,10 +163,27 @@ void loadParties(const string &filename, vector<string> &v)
     inFile.close();
 }
 
-string displayEvent(const string &eventDescription)
+string displayEvent(const int eventNum, int &prosperity, int &safety, map<string, array<list<string>, 3>> &parties)
 {
     // This function will display the current state of the world, including all parties and the kingdom's prosperity and safety.
     // For now, we will just print the event description. We can expand this later to include more detailed information about parties and kingdom status.
+    string eventDescription;
+    switch (eventNum)
+    {
+    case 1:
+        eventDescription = "A new adventure has begun!";
+        break;
+    case 2:
+        eventDescription = "The kingdom's garrison is fortified.";
+        safety += 10; // Example of modifying safety based on an event.
+        break;
+    case 3:
+        eventDescription = "A famine has struck the land!";
+        prosperity -= 5; // Example of modifying prosperity based on an event.
+        break;
+    default:
+        eventDescription = "An unknown event has occurred.";
+    }
     cout << "Event: " << eventDescription << endl;
     cout << "Current state of the world:" << endl;
     // Here we would add code to display the current state of the world, including all parties
