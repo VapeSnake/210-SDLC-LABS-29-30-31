@@ -72,7 +72,7 @@ int main()
         return 1; // Exit with an error code if any file failed to load.
     }
 
-    random_device rd;  // Random number generator for assigning party members, loot, and quests randomly.
+    random_device rd;  // Random number generator for event numbers.
     mt19937 gen(rd()); // Random number generator.
 
     for (int i = 0; i < 3; i++)
@@ -149,7 +149,8 @@ int main()
     Our general outline for the simulation loop is as follows:
     For each time period:
         For each party:
-        Combat check: If the event is a combat event, we will call the combat function which can remove members and loot from the party based on the event number.
+        Combat check: If the event is a combat event, we will call the combat function which can remove members and loot
+        from the party based on the event number.
         Quest event: We will call the questEvent function which can add/remove quests, members, and loot.
         Kingdom event: We will call the kingdomEvent function which can modify the kingdom's prosperity and safety based on the event number.
         After processing the events for all parties, we will call the displayEvent function to show the
@@ -193,8 +194,16 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
         eventDescription = "A famine has struck the land!";
         prosperity -= 5; // Example of modifying prosperity based on an event.
         break;
+    case 4:
+        eventDescription = "A band of marauders is terrorizing the countryside!";
+        safety -= 10; // Example of modifying safety based on an event.
+        break;
+    case 5:
+        eventDescription = "A bountiful harvest has increased the kingdom's wealth!";
+        prosperity += 15; // Example of modifying prosperity based on an event.
+        break;
     default:
-        eventDescription = "An unknown event has occurred.";
+        eventDescription = "Nothing significant has occurred.";
     }
     cout << "Event: " << eventDescription << endl;
     cout << "---Current state of the world---" << endl;
@@ -255,17 +264,26 @@ void questEvent(int eventNum, map<string, array<list<string> &, 3>> &parties)
 
 void kingdomEvent(int eventNum, int &prosperity, int &safety)
 {
-    /*
-    This function will simulate a kingdom event that modifies prosperity and safety based on the event number.
-    if eventNum % x_value == 0: -- Every x events, we have a prosperity event.
-        prosperity += 10; -- Increase prosperity by some value.
-        displayEvent("The kingdom's prosperity has increased!"); -- We can expand this later to include more details about the event.
-
-    if eventNum % x_value == 0: -- Every x events, we have a safety event.
-        safety -= 10; -- Decrease safety by some value.
-        displayEvent("The kingdom's safety has decreased!"); -- We can expand this later to include more details about the event.
-
-    */
+    
+    switch (eventNum)
+    {
+    case 2:
+        prosperity += 10; // Example of an event that increases prosperity.
+        break;
+    case 3:
+        safety -= 5; // Example of an event that decreases safety.
+        break;
+    case 4:
+        prosperity -= 10; // Example of an event that decreases prosperity.
+        safety += 5; // Example of an event that increases safety.
+        break;
+        case 5:
+        prosperity += 5; // Example of an event that increases prosperity.
+    default:
+        // No change to prosperity or safety for other events.
+        break;
+    }
+    
 }
 
 int randomEvent()
