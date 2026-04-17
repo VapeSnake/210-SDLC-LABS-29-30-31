@@ -1,0 +1,29 @@
+For our alpha, we want to test our functions kingdomEvent(), displayEvent(), and loadParties(), and randomEvent().
+kingdomEvent() will be one of our main functions that modify world state changes in this program.
+displayEvent() needs to be visually organized and tidy and show correct data about each time period.
+loadParties() will be used to read file data into containers (vectors) to be shuffled and used for randomized initialization of
+party names, member names, loot, and active quests.
+randomEvent() will be used to initialize a variable in our loop of time periods that almost all functions will use in this program.
+
+Unit testing:
+// loadParties() and Map Initialization
+1. Verify file reading properly works by creating vectors for party names, party members, loot, and quests to be used as
+   arguments for loadParties().
+   Include guards to display error messages if files are not opened or vectors storing data from txt files are empty.
+2. Once file reading is verified and vectors have data read into them, use a nested for loop to read vectors into
+   map where outer layer is for shuffling the partyname vector and assigning map keys to elements of the vector
+   and inner layer shuffles memberName, loot, and quests vectors and assigns elements from vectors into respective
+   lists of each map value. Include guard that displays error message of map not initializing if map initialization fails.
+// displayEvent() 
+3. Call the displayEvent() function with 1 as the eventNum, with the safety, prosperity, and Map as arguments to display
+   the first switch case displaying the beginning of the world session with the first parties initialized above and
+   default state of prosperity and safety integers set to 50 each. 
+// kingdomEvent()
+4. Test that this function modifies safety and prosperity variables when called. Use 2 as the eventNum argument, as well as
+   safety and prosperity variables. If successful, test with other switch cases and observe that each eventNum matches integers
+   respective modification to prosperity and safety.
+// randomEvent() and test of time periods.
+5. Create a for loop that repeats 3 times (use our const int TIME_PERIODS). During each loop, create a variable that is initialized with
+   our randomEvent() function. Value between 2-5 should be returned, verify by displaying value generated before returning value out of function.
+   Use variable as argument for both kingdomEvent() and displayEvent(). Verify that the correct world variable (prosperity or safety or both!) are 
+   affected with the proper changes from the kingdomEvent() function.
