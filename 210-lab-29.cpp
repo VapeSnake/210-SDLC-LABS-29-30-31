@@ -68,25 +68,64 @@ int main()
         shuffle(partyNames.begin(), partyNames.end(), gen); // Shuffle the party names to assign them randomly.
         parties[partyNames[i]] = array<list<string>, 3>(); // Initialize the array of lists for each party.
     }
+// Initialize first 3 parties with 3 members, 3 loot items, and 2 quests each randomly assigned from the vectors we loaded from files.
+    auto it = parties.begin(); // Iterator to loop through the parties in the map.
+    // Use a nested for loop. Outer loop for moving through parties, inner loop for assigning members, loot, and quests.
+    for (int partyCount = 0; partyCount < 3 && it != parties.end(); partyCount++, ++it)
+    {
+        // Shuffle the vectors to assign members, loot, and quests randomly to each party.
+        shuffle(partyMembers.begin(), partyMembers.end(), gen);
+        shuffle(lootItems.begin(), lootItems.end(), gen);
+        shuffle(quests.begin(), quests.end(), gen);
 
-    auto it = parties.begin(); // Get an iterator to the first party in the map.
-    if (it != parties.end())
-    { // Check if the map is not empty.
-        for (int j = 0; j < 3; j++)
-        {        
-            // Load 3 members, 3 loot items, and 2 quests for the first party.
-            shuffle(partyMembers.begin(), partyMembers.end(), gen); // Shuffle the party members to assign them randomly.
-            shuffle(lootItems.begin(), lootItems.end(), gen);       // Shuffle the loot items to assign them randomly.
-            shuffle(quests.begin(), quests.end(), gen);             // Shuffle the quests to assign them randomly.
-            
-            it->second[0].push_back(partyMembers[j]); // Add members to the party's member list.
-            it->second[1].push_back(lootItems[j]);    // Add loot items to the party's loot list.
-            if (j < 2)
-            {                                       // Only add 2 quests.
-                it->second[2].push_back(quests[j]); // Add quests to the party's quest list.
+        for (int count = 0; count < 3; count++)
+        { // Assign 3 members, 3 loot items, and 2 quests to each party.
+            it->second[0].push_back(partyMembers[count]); // Add members to the party's member list.
+            it->second[1].push_back(lootItems[count]);    // Add loot to the party's loot list.
+            if (count < 2)
+            { // Only add 2 quests.
+                it->second[2].push_back(quests[count]); // Add quests to the party's quest list.
             }
         }
     }
+
+        cout << "Initial party setup complete. Parties, members, loot, and quests have been loaded." << endl;
+
+        if (!parties.empty())
+        { // Check if the map is not empty before trying to display.
+            cout << "Displaying initial state of the world:" << endl;
+            displayEvent("Initial state of the world"); // Display the initial state of the world.
+        }
+         else
+        {
+            cout << "No parties loaded. Cannot display initial state." << endl;
+        }
+        // Confirm our initial parties of our map are initialized.
+        it = parties.begin(); // Reset the iterator to the first party in the map.
+        while (it != parties.end())
+        { // Loop through the parties in the map and display their information to verify proper loading.
+            cout << "Party Name: " << it->first << endl; // Display the party name (key of the map).
+            cout << "Members: ";
+            for (const auto &member : it->second[0])
+            { // Display the members of the party.
+                cout << member << " ";
+            }
+            cout << endl;
+            cout << "Loot: ";
+            for (const auto &loot : it->second[1])
+            { // Display the loot of the party.
+                cout << loot << " ";
+            }
+            cout << endl;
+            cout << "Quests: ";
+            for (const auto &quest : it->second[2])
+            { // Display the quests of the party.
+                cout << quest << " ";
+            }
+            cout << endl
+                 << endl;
+            ++it; // Move to the next party in the map.
+        }
 
     // After this, we can use the display function to show all parties,their info, and kingdom status to show initial state of the world.
     // displayEvent(0); -- This will display the initial state of the world before any events occur. We can use event number 0 for initial event. --
