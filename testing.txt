@@ -6,4 +6,8 @@ party names, member names, loot, and active quests.
 randomEvent() will be used to initialize a variable in our loop of time periods that almost all functions will use in this program.
 
 Unit testing:
-1. Verify file reading properly works by creating 
+1. Verify file reading properly works by creating vectors for party names, party members, loot, and quests.
+   include guards to display error messages if files are not opened or vectors storing data from txt files are empty.
+2. Once file reading is verified and vectors have data read into them, use a nested for loop to read vectors into
+   map where outer layer is for shuffling the partyname vector and assigning map keys to elements of the vector
+   and inner layer shuffles memberName, loot, and quests vectors and assigns 

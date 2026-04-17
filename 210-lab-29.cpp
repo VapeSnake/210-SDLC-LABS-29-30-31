@@ -41,7 +41,9 @@ int main()
     vector<string> partyMembers;
     vector<string> lootItems;
     vector<string> quests;
+    /*
     vector<string> events;
+    */
 
     /*
     Our first step is to load our world and parties from a file. Our kingdom only has two variables to worry about for now: prosperity and safety.
@@ -64,9 +66,11 @@ int main()
     loadParties("p_member_names.txt", partyMembers);
     loadParties("loot.txt", lootItems);
     loadParties("quests.txt", quests);
-    loadParties("events.txt", events);
+    // Not necessary yet. In future will hold event descriptions.
+    /*loadParties("events.txt", events);*/ 
+   
 
-    if (partyNames.empty() || partyMembers.empty() || lootItems.empty() || quests.empty() || events.empty())
+    if (partyNames.empty() || partyMembers.empty() || lootItems.empty() || quests.empty())
     {
         cerr << "Error: One or more files failed to load. Please check the file paths and contents." << endl;
         return 1; // Exit with an error code if any file failed to load.
