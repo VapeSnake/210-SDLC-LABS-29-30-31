@@ -25,4 +25,5 @@ Unit testing:
 // randomEvent() and test of time periods.
 5. Create a for loop that repeats 3 times (use our const int TIME_PERIODS). During each loop, create a variable that is initialized with
    our randomEvent() function. Value between 2-5 should be returned, verify by displaying value generated before returning value out of function.
-   Use variable as argument for both kingdomEvent() and displayEvent(). Verify that the correct modifcation 
+   Use variable as argument for both kingdomEvent() and displayEvent(). Verify that the correct world variable (prosperity or safety or both!) are 
+   affected with the proper changes from the kingdomEvent() function.

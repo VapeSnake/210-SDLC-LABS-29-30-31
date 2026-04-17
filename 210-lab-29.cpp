@@ -163,6 +163,7 @@ int main()
    for (int time = 0; time < TIME_PERIODS; time++)
     {
         int event = randomEvent(); // Generate a random event number to simulate an event occurring in our world.
+        cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
     kingdomEvent(event, prosperity, safety); // Test kingdom event function by simulating the generated event.
     displayEvent(event, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
     } // End of simulation loop.
