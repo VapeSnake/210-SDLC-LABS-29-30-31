@@ -1,0 +1,9 @@
+For our alpha, we want to test our functions kingdomEvent(), displayEvent(), and loadParties(), and randomEvent().
+kingdomEvent() will be one of our main functions that modify world state changes in this program.
+displayEvent() needs to be visually organized and tidy and show correct data about each time period.
+loadParties() will be used to read file data into containers (vectors) to be shuffled and used for randomized initialization of
+party names, member names, loot, and active quests.
+randomEvent() will be used to initialize a variable in our loop of time periods that almost all functions will use in this program.
+
+Unit testing:
+1. Verify file reading properly works by creating 
