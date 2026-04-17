@@ -119,6 +119,10 @@ string displayEvent(const string &eventDescription)
     // This function will display the current state of the world, including all parties and the kingdom's prosperity and safety.
     // For now, we will just print the event description. We can expand this later to include more detailed information about parties and kingdom status.
     cout << "Event: " << eventDescription << endl;
+    cout << "Current state of the world:" << endl;
+    // Here we would add code to display the current state of the world, including all parties
+    // and the kingdom's prosperity and safety. This can be done by iterating through the parties map and printing out the relevant information.
+
     return eventDescription;
 }
 
@@ -167,3 +171,16 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
 
     */
 }
+
+//NOTES:
+/*
+Map properly read info from files and stored it in correct format.
+Functions are outlined but still need to be tested and defined further.
+Events are simulated based on the event number. Those numbers need to be added and assigned a string description.
+Combat function needs to be defined to remove members and add loot based on the event number and random chance.
+Quest event function needs to be defined to add/remove quests, members, and loot based on the event number and random chance as well 
+as affect kingdom.
+Kingdom event function needs to be defined to modify prosperity and safety based on the event number.
+Display function needs to be defined to show the current state of the world, including all parties and the kingdom's 
+prosperity and safety, as well as the event description.
+*/
