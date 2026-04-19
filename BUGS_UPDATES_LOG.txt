@@ -8,7 +8,8 @@
 4) Combat() function didn't display case 5.
     FIX: Changed guard at top of function to include eventNum 5
 5) As of 10th commit B. this program only alters first party. Rewriting of parameters for function may be needed.
-    FIX: 
+    FIX: Updated combat and Quest functions to handle an individual party. Once applyEventEffects is called, program now affects each party.
+
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
@@ -16,4 +17,4 @@
 - Added randomEvent() function that will be used for each time period to generate number that display, kingdom, and quest functions will use to modify
   world and/or party information.
 -Changed return type for combat and questEvent function to string to return descriptions of said scenarios.
-
+- Combat and QuestEvent functions now show which party loses members or how their quests are updated.

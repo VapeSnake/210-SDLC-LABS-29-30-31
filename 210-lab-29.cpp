@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const int TIME_PERIODS = 3;   // We will simulate 3 time periods in our world.
+const int TIME_PERIODS = 25;   // We will simulate 3 time periods in our world.
 const int NUM_EVENTS = 5;     // For alpha, we will just have 5 events to test change in our world.
 const int MAX_PARTY_SIZE = 4; // Max party size of 4 members.
 const int MAX_LOOT_SIZE = 10; // Max loot size of 10 items.
@@ -258,18 +258,18 @@ string combat(int eventNum, const string &partyName, array<list<string>, 3> &par
     }
     case 3:
     {
-        combatDescription = "[Combat] A party member was too slow for a vampire.";
+        combatDescription = "[Combat] " + partyName + " lost a member to a vampire.";
         break;
     }
     case 4:
     {
-        combatDescription = "[Combat] A party member was caught in a trap set by bandits";
+        combatDescription = "[Combat] " + partyName + " had a member caught in a trap set by bandits";
         break;
     }
     case 5:
     {
-        combatDescription = "[Combat] A party was ambushed by a gnolls, but they managed to escape without any losses.";
-        break;
+        combatDescription = "[Combat] " + partyName + " was ambushed by a gnolls, but they managed to escape without any losses.";
+        return combatDescription; // Return early since no members are lost in this event.
     }
     }
         party[0].pop_back();      // Remove a member from the party's member list to simulate the loss of a member in combat.
@@ -292,7 +292,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     {
     case 2:
     {
-        questDescription = "[Quest Event] A new quest has arisen to clear out a nearby cave infested with goblins.";
+        questDescription = "[Quest Event] " + partyName + " has a new quest: Clear the Goblin Cave.";
         if (party[2].size() < MAX_QUEST_SIZE) // Check if the party's quest list is not already at max capacity before adding a new quest.
         {
             party[2].push_back("Clear the Goblin Cave"); // Add a new quest to the party's quest list to simulate a new quest arising.
@@ -306,7 +306,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     }
     case 3:
     {
-        questDescription = "[Quest Event] A villager has requested help gathering herbs from the forest.";
+        questDescription = "[Quest Event] " + partyName + " has a new quest: Gather Herbs for the Villager.";
         if (party[2].size() < MAX_QUEST_SIZE) // Check if the party's quest list is not already at max capacity before adding a new quest.
         {
             party[2].push_back("Gather Herbs for the Villager"); // Add a new quest to the party's quest list to simulate a new quest arising.
@@ -326,7 +326,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
         // Check if the party's quest list is not empty before trying to remove a quest.
         if (!party[2].empty())
         {
-            questDescription = "[Quest Event] A party has completed a quest!";
+            questDescription = "[Quest Event] " + partyName + " has completed a quest!";
             party[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
             if (party[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
             {
@@ -345,7 +345,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     {
         if (!party[2].empty())
         {
-            questDescription = "[Quest Event] A party has completed a quest!";
+            questDescription = "[Quest Event] " + partyName + " has completed a quest!";
             party[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
             if (party[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
             {
