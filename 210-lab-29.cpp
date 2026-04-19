@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const int TIME_PERIODS = 25;   // We will simulate 3 time periods in our world.
+const int TIME_PERIODS = 25;  // We will simulate 3 time periods in our world.
 const int NUM_EVENTS = 5;     // For alpha, we will just have 5 events to test change in our world.
 const int MAX_PARTY_SIZE = 4; // Max party size of 4 members.
 const int MAX_LOOT_SIZE = 10; // Max loot size of 10 items.
@@ -148,8 +148,8 @@ int main()
     for (int time = 0; time < TIME_PERIODS; time++)
     {
         cout << "Time Period " << time + 1 << ":\n"
-             << endl;                                     // Display the current time period in the simulation.
-        
+             << endl; // Display the current time period in the simulation.
+
         int event = randomEvent();                         // Generate a random event number to simulate an event occurring in our world.
         cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
         // Test kingdom event function by simulating the generated event.
@@ -272,8 +272,8 @@ string combat(int eventNum, const string &partyName, array<list<string>, 3> &par
         return combatDescription; // Return early since no members are lost in this event.
     }
     }
-        party[0].pop_back();      // Remove a member from the party's member list to simulate the loss of a member in combat.
-        return combatDescription; // Now this will return the combat description after removing a member to simulate the consequences of combat.
+    party[0].pop_back();      // Remove a member from the party's member list to simulate the loss of a member in combat.
+    return combatDescription; // Now this will return the combat description after removing a member to simulate the consequences of combat.
 }
 // This function simulates a quest event that can add/remove quests, members, and loot based on the event number and random chance.
 string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party)
@@ -389,12 +389,23 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
 // This function will help keep our main loop cleaner by calling combat and quest events.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties)
 {
-    for (auto &party : parties)
+    for (auto it = parties.begin(); it != parties.end(); ++it)
     {
-        string partyName = party.first; // Get the party name from the map.
-        auto& partyData = party.second; // Get the party's data (array of lists) from the map.
-        cout << combat(eventNum, partyName, partyData) << endl; // Apply combat event effects to the party based on the event number.
+        string partyName = it->first;                               // Get the party name from the map.
+        auto &partyData = it->second;                               // Get the party's data (array of lists) from the map.
+        cout << combat(eventNum, partyName, partyData) << endl;     // Apply combat event effects to the party based on the event number.
         cout << questEvent(eventNum, partyName, partyData) << endl; // Apply quest event effects to the party based on the event number.
+
+        // Disband check
+        if (partyData[0].empty()) // This is our list of members. If it's empty, the party has no one left and should be disbanded.
+        {                         // Check if the party's member list is empty to determine if the party should be disbanded.
+            cout << "Party " << partyName << " has been wiped out and disbanded!" << endl;
+            parties.erase(it); // Remove the party from the map if it has no members left.
+        }
+        else
+        {
+            it++; // Move to the next party in the map if the current party is not disbanded.
+        }
     }
 }
 
