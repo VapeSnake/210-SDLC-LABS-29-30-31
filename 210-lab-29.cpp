@@ -23,11 +23,11 @@ void loadParties(const string &filename, vector<string> &v);
 // Display function.
 string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
-string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party);      // This function simulates a quest event.
-void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
-void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties); // This function uses event numbers to modify parties and kingdom.
-string combat(int eventNum, const string &partyName, array<list<string>, 3> &party);          // Can remove members and add/delete loot
-int randomEvent();                                                                  // This function generates a random event number to simulate the occurrence of events in our world.
+string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party); // This function simulates a quest event.
+void kingdomEvent(int eventNum, int &prosperity, int &safety);                           // This function simulates a kingdom event that modifies prosperity and safety.
+void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties);      // This function uses event numbers to modify parties and kingdom.
+string combat(int eventNum, const string &partyName, array<list<string>, 3> &party);     // Can remove members and add/delete loot
+int randomEvent();                                                                       // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
 {
@@ -143,7 +143,6 @@ int main()
         ++it; // Move to the next party in the map.
     }
 
-
     cout << "START OF PROGRAM SIMULATION\n"
          << endl;
     for (int time = 0; time < TIME_PERIODS; time++)
@@ -151,7 +150,7 @@ int main()
         int event = randomEvent();                         // Generate a random event number to simulate an event occurring in our world.
         cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
         kingdomEvent(event, prosperity, safety);           // Test kingdom event function by simulating the generated event.
-        applyEventEffects(event, parties);                // Test combat and quest event functions by simulating the generated event.
+        applyEventEffects(event, parties);                 // Test combat and quest event functions by simulating the generated event.
         displayEvent(event, prosperity, safety, parties);  // Display the state of the world after the kingdom event to verify the changes.
     } // End of simulation loop.
 
@@ -236,12 +235,11 @@ string combat(int eventNum, const string &partyName, array<list<string>, 3> &par
     // This function will return a string that informs players if a member of a party is lost.
     if (eventNum < 2 || eventNum > 5)
     {
-        return "This time period was peaceful. No combat occurred.";
+        return "[Combat] " + partyName + "had a peaceful period. No combat occurred."; // Statement for each party.
     }
-    auto it = parties.begin(); // Iterator to loop through the parties in the map.
-    if (it == parties.end())
-    { // Check if the map is empty before trying to access it.
-        return "There's no one left to fight! All parties have been wiped out.";
+    if (party[0].empty())
+    {                                                                               // Check if the party's member list is empty before trying to remove a member.
+        return "[Combat] " + partyName + " has no members left to lose in combat!"; // Statement for each party.
     }
 
     string combatDescription;
@@ -249,37 +247,27 @@ string combat(int eventNum, const string &partyName, array<list<string>, 3> &par
     {
     case 2:
     {
-        combatDescription = "[Combat] A party member was swarmed by goblins.";
-        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-        return combatDescription;
+        combatDescription = "[Combat] " + partyName + " lost a member to a swarm of goblins.";
         break;
     }
     case 3:
     {
         combatDescription = "[Combat] A party member was too slow for a vampire.";
-        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-        return combatDescription;
         break;
     }
     case 4:
     {
         combatDescription = "[Combat] A party member was caught in a trap set by bandits";
-        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-        return combatDescription;
         break;
     }
     case 5:
     {
         combatDescription = "[Combat] A party was ambushed by a gnolls, but they managed to escape without any losses.";
-        return combatDescription;
         break;
     }
-    default: // For any other event numbers, we will assume no combat occurred.
-    {
-        combatDescription = "This time period was peaceful. No combat occurred.";
-        return combatDescription;
     }
-    }
+        party[0].pop_back();      // Remove a member from the party's member list to simulate the loss of a member in combat.
+        return combatDescription; // Now this will return the combat description after removing a member to simulate the consequences of combat.
 }
 // This function simulates a quest event that can add/remove quests, members, and loot based on the event number and random chance.
 string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party)
@@ -396,7 +384,7 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
 // This function will help keep our main loop cleaner by calling combat and quest events.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties)
 {
-    //Combat effects will display combat function.
+    // Combat effects will display combat function.
     string combatResult = combat(eventNum, parties);
     cout << combatResult << endl;
     if (!combatResult.empty()) // Check if the combat result string is not empty before trying to display it.
