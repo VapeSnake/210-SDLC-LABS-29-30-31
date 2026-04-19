@@ -10,8 +10,8 @@
 
 using namespace std;
 
-const int TIME_PERIODS = 3; // We will simulate 3 time periods in our world.
-const int NUM_EVENTS = 5; // For alpha, we will just have 5 events to test change in our world.
+const int TIME_PERIODS = 3;   // We will simulate 3 time periods in our world.
+const int NUM_EVENTS = 5;     // For alpha, we will just have 5 events to test change in our world.
 const int MAX_PARTY_SIZE = 4; // Max party size of 4 members.
 const int MAX_LOOT_SIZE = 10; // Max loot size of 10 items.
 const int MAX_QUEST_SIZE = 3; // Max quest size of 3 quests.
@@ -23,11 +23,11 @@ void loadParties(const string &filename, vector<string> &v);
 // Display function.
 string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
-void questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);        // This function simulates a quest event.
+string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);        // This function simulates a quest event.
 void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties); // This function uses event numbers to modify parties and kingdom.
-string combat(int eventNum, map<string, array<list<string>, 3>> &parties);            // Can remove members and add/delete loot
-int randomEvent(); // This function generates a random event number to simulate the occurrence of events in our world.
+string combat(int eventNum, map<string, array<list<string>, 3>> &parties);          // Can remove members and add/delete loot
+int randomEvent();                                                                  // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
 {
@@ -67,8 +67,7 @@ int main()
     loadParties("loot.txt", lootItems);
     loadParties("quests.txt", quests);
     // Not necessary yet. In future will hold event descriptions.
-    /*loadParties("events.txt", events);*/ 
-   
+    /*loadParties("events.txt", events);*/
 
     if (partyNames.empty() || partyMembers.empty() || lootItems.empty() || quests.empty())
     {
@@ -80,11 +79,11 @@ int main()
     mt19937 gen(rd()); // Random number generator.
 
     for (int i = 0; i < 3; i++)
-    { // Load 3 parties into the map with empty lists for members, loot, and quests.
+    {                                                       // Load 3 parties into the map with empty lists for members, loot, and quests.
         shuffle(partyNames.begin(), partyNames.end(), gen); // Shuffle the party names to assign them randomly.
-        parties[partyNames[i]] = array<list<string>, 3>(); // Initialize the array of lists for each party.
+        parties[partyNames[i]] = array<list<string>, 3>();  // Initialize the array of lists for each party.
     }
-// Initialize first 3 parties with 3 members, 3 loot items, and 2 quests each randomly assigned from the vectors we loaded from files.
+    // Initialize first 3 parties with 3 members, 3 loot items, and 2 quests each randomly assigned from the vectors we loaded from files.
     auto it = parties.begin(); // Iterator to loop through the parties in the map.
     // Use a nested for loop. Outer loop for moving through parties, inner loop for assigning members, loot, and quests.
     for (int partyCount = 0; partyCount < 3 && it != parties.end(); partyCount++, ++it)
@@ -95,53 +94,54 @@ int main()
         shuffle(quests.begin(), quests.end(), gen);
 
         for (int count = 0; count < 3; count++)
-        { // Assign 3 members, 3 loot items, and 2 quests to each party.
+        {                                                 // Assign 3 members, 3 loot items, and 2 quests to each party.
             it->second[0].push_back(partyMembers[count]); // Add members to the party's member list.
             it->second[1].push_back(lootItems[count]);    // Add loot to the party's loot list.
             if (count < 2)
-            { // Only add 2 quests.
+            {                                           // Only add 2 quests.
                 it->second[2].push_back(quests[count]); // Add quests to the party's quest list.
             }
         }
     }
 
-        cout << "Initial party setup complete. Parties, members, loot, and quests have been loaded." << endl;
+    cout << "Initial party setup complete. Parties, members, loot, and quests have been loaded." << endl;
 
-        if (!parties.empty())
-        { // Check if the map is not empty before trying to display.
-            cout << "---Displaying initial state of the world---\n" << endl;
-            displayEvent(1, prosperity, safety, parties); // Display the initial state of the world.
+    if (!parties.empty())
+    { // Check if the map is not empty before trying to display.
+        cout << "---Displaying initial state of the world---\n"
+             << endl;
+        displayEvent(1, prosperity, safety, parties); // Display the initial state of the world.
+    }
+    else
+    {
+        cout << "No parties loaded. Cannot display initial state." << endl;
+    }
+    // Confirm our initial parties of our map are initialized.
+    it = parties.begin(); // Reset the iterator to the first party in the map.
+    while (it != parties.end())
+    {                                                // Loop through the parties in the map and display their information to verify proper loading.
+        cout << "Party Name: " << it->first << endl; // Display the party name (key of the map).
+        cout << "Members: ";
+        for (const auto &member : it->second[0])
+        { // Display the members of the party.
+            cout << member << " ";
         }
-         else
-        {
-            cout << "No parties loaded. Cannot display initial state." << endl;
+        cout << endl;
+        cout << "Loot: ";
+        for (const auto &loot : it->second[1])
+        { // Display the loot of the party.
+            cout << loot << " ";
         }
-        // Confirm our initial parties of our map are initialized.
-        it = parties.begin(); // Reset the iterator to the first party in the map.
-        while (it != parties.end())
-        { // Loop through the parties in the map and display their information to verify proper loading.
-            cout << "Party Name: " << it->first << endl; // Display the party name (key of the map).
-            cout << "Members: ";
-            for (const auto &member : it->second[0])
-            { // Display the members of the party.
-                cout << member << " ";
-            }
-            cout << endl;
-            cout << "Loot: ";
-            for (const auto &loot : it->second[1])
-            { // Display the loot of the party.
-                cout << loot << " ";
-            }
-            cout << endl;
-            cout << "Quests: ";
-            for (const auto &quest : it->second[2])
-            { // Display the quests of the party.
-                cout << quest << " ";
-            }
-            cout << endl
-                 << endl;
-            ++it; // Move to the next party in the map.
+        cout << endl;
+        cout << "Quests: ";
+        for (const auto &quest : it->second[2])
+        { // Display the quests of the party.
+            cout << quest << " ";
         }
+        cout << endl
+             << endl;
+        ++it; // Move to the next party in the map.
+    }
 
     // LOOP FOR SIMULATION OF EVENTS
     /*
@@ -155,13 +155,15 @@ int main()
         After processing the events for all parties, we will call the displayEvent function to show the
         current state of the world, including all parties and the kingdom's prosperity and safety.
     */
-   for (int time = 0; time < TIME_PERIODS; time++)
+    cout << "START OF PROGRAM SIMULATION\n"
+         << endl;
+    for (int time = 0; time < TIME_PERIODS; time++)
     {
-        int event = randomEvent(); // Generate a random event number to simulate an event occurring in our world.
+        int event = randomEvent();                         // Generate a random event number to simulate an event occurring in our world.
         cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
-    kingdomEvent(event, prosperity, safety); // Test kingdom event function by simulating the generated event.
-    cout << combat(event, parties) << endl; // Test combat function by simulating the generated event.
-    displayEvent(event, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
+        kingdomEvent(event, prosperity, safety);           // Test kingdom event function by simulating the generated event.
+        cout << combat(event, parties) << endl;            // Test combat function by simulating the generated event.
+        displayEvent(event, prosperity, safety, parties);  // Display the state of the world after the kingdom event to verify the changes.
     } // End of simulation loop.
 
     return 0;
@@ -212,7 +214,7 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
     cout << "---Current state of the world---" << endl;
     cout << "Kingdom Prosperity: " << prosperity << endl;
     cout << "Kingdom Safety: " << safety << endl;
-        cout << "---Parties---" << endl;
+    cout << "---Parties---" << endl;
     for (const auto &party : parties)
     {
         cout << "Party Name: " << party.first << endl;
@@ -242,7 +244,7 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
 
 string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
 {
-// This function will return a string that informs players if a member of a party is lost.
+    // This function will return a string that informs players if a member of a party is lost.
     if (eventNum < 2 || eventNum > 4)
     {
         return "This time period was peaceful. No combat occurred.";
@@ -256,79 +258,109 @@ string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
     string combatDescription;
     switch (eventNum)
     {
-        case 2:
-        {
-            combatDescription = "[Combat] A party member was swarmed by goblins.";
-            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-            return combatDescription;
-            break;
-        }
-        case 3:
-        {
-            combatDescription = "[Combat] A party member was too slow for a vampire.";
-            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-            return combatDescription;
-            break;
-        }
-        case 4:
-        {
-            combatDescription = "[Combat] A party member was caught in a trap set by bandits";
-            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
-            return combatDescription;
-            break;
-        }
-        default: // For any other event numbers, we will assume no combat occurred.
-        {
-            combatDescription = "This time period was peaceful. No combat occurred.";
-            return combatDescription;
-        }
+    case 2:
+    {
+        combatDescription = "[Combat] A party member was swarmed by goblins.";
+        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+        return combatDescription;
+        break;
     }
-   
+    case 3:
+    {
+        combatDescription = "[Combat] A party member was too slow for a vampire.";
+        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+        return combatDescription;
+        break;
+    }
+    case 4:
+    {
+        combatDescription = "[Combat] A party member was caught in a trap set by bandits";
+        it->second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+        return combatDescription;
+        break;
+    }
+    default: // For any other event numbers, we will assume no combat occurred.
+    {
+        combatDescription = "This time period was peaceful. No combat occurred.";
+        return combatDescription;
+    }
+    }
 }
-
-void questEvent(int eventNum, map<string, array<list<string> &, 3>> &parties)
+// This function simulates a quest event that can add/remove quests, members, and loot based on the event number and random chance.
+string questEvent(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
-    /*
+    if (eventNum < 2 || eventNum > 5)
+    {
+        return "No new quests have arisen during this time period.";
+    }
+    auto it = parties.begin(); // Iterator to loop through the parties in the map.
+    if (it == parties.end())
+    { // Check if the map is empty before trying to access it.
+        return "There's no one left to give quests to! All parties have been wiped out.";
+    }
 
-   if party has active quests:
-           if success:
-               remove quest
-               add loot
-               displayEvent("Quest completed")
-           else:
-               remove quest
-               displayEvent("Quest failed")
-
-       if random chance:
-           add new quest
-           displayEvent("New quest acquired")
-
-    */
+    string questDescription;
+    switch (eventNum)
+    {    case 2:
+    {
+        questDescription = "[Quest Event] A new quest has arisen to clear out a nearby cave infested with goblins.";
+        if ( it->second[2].size() < MAX_QUEST_SIZE ) // Check if the party's quest list is not already at max capacity before adding a new quest.
+        {
+            it->second[2].push_back("Clear the Goblin Cave"); // Add a new quest to the party's quest list to simulate a new quest arising.
+        }
+        return questDescription;
+        break;
+    }
+    case 3:
+    {
+        questDescription = "[Quest Event] A villager has requested help gathering herbs from the forest.";
+        if ( it->second[2].size() < MAX_QUEST_SIZE ) // Check if the party's quest list is not already at max capacity before adding a new quest.
+        {
+            it->second[2].push_back("Gather Herbs for the Villager"); // Add a new quest to the party's quest list to simulate a new quest arising.
+        }
+        return questDescription;
+        break;
+    }
+    // For events 4 and 5, we will simulate the completion of a quest, which can remove a quest from the party's quest 
+    // list and add loot to the party's loot list based on the event number.
+    case 4:
+    {
+        questDescription = "[Quest Event] A party has completed the quest to clear out the goblin cave!";
+        if (!it->second[2].empty())
+        { // Check if the party's quest list is not empty before trying to remove a quest.
+            it->second[2].pop_back(); // Remove a quest from the party's quest list to simulate the completion of a quest.
+        }
+        if (it->second[1].size() < MAX_LOOT_SIZE)
+        { // Check if the party's loot list is not already at max capacity before adding new loot.
+            it->second[1].push_back("Goblin Treasure"); // Add new loot to the party's loot list to simulate the reward for completing a quest.
+        }
+        return questDescription;
+        break;
+    }
 }
 
 void kingdomEvent(int eventNum, int &prosperity, int &safety)
 {
-    
+
     switch (eventNum)
     {
-    case 2: // Garrison fortified event.
+    case 2:           // Garrison fortified event.
         safety += 10; // Example of an event that increases safety.
         break;
-    case 3: // Famine event.
+    case 3:               // Famine event.
         prosperity -= 15; // Example of an event that decreases prosperity.
         break;
-    case 4: // Marauders event.
+    case 4:               // Marauders event.
         prosperity -= 10; // Example of an event that decreases prosperity.
-        safety -= 5; // Example of an event that decreases safety.
+        safety -= 5;      // Example of an event that decreases safety.
         break;
-        case 5: // Bountiful harvest event.
+    case 5:               // Bountiful harvest event.
         prosperity += 15; // Example of an event that increases prosperity.
         break;
     default:
         // No change to prosperity or safety for other events.
         break;
     }
-    
 }
 
 int randomEvent()
@@ -338,15 +370,15 @@ int randomEvent()
     return eventNum;
 }
 
-//NOTES:
+// NOTES:
 /*
 Map properly read info from files and stored it in correct format.
 Functions are outlined but still need to be tested and defined further.
 Events are simulated based on the event number. Those numbers need to be added and assigned a string description.
 Combat function needs to be defined to remove members and add loot based on the event number and random chance.
-Quest event function needs to be defined to add/remove quests, members, and loot based on the event number and random chance as well 
+Quest event function needs to be defined to add/remove quests, members, and loot based on the event number and random chance as well
 as affect kingdom.
 Kingdom event function needs to be defined to modify prosperity and safety based on the event number.
-Display function needs to be defined to show the current state of the world, including all parties and the kingdom's 
+Display function needs to be defined to show the current state of the world, including all parties and the kingdom's
 prosperity and safety, as well as the event description.
 */

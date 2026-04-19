@@ -1,10 +1,13 @@
 ---Bugs---
 1) Combat function having issues with switch statement, not compiling.
-  
+    FIX: Enclosed each case with curly brackets, appeared to be a scope issue. Additionally, value for map had an & symbol, causing a type error when
+         using map "parties" as argument.
+
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
 - Updated displayEvent() with dashes to visually tidy display of data during each period.
 - Added randomEvent() function that will be used for each time period to generate number that display, kingdom, and quest functions will use to modify
   world and/or party information.
+-Changed return type for combat and questEvent function to string to return descriptions of said scenarios.
 
