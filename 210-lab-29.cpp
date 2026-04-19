@@ -23,10 +23,10 @@ void loadParties(const string &filename, vector<string> &v);
 // Display function.
 string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
-string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);      // This function simulates a quest event.
+string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party);      // This function simulates a quest event.
 void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties); // This function uses event numbers to modify parties and kingdom.
-string combat(int eventNum, map<string, array<list<string>, 3>> &parties);          // Can remove members and add/delete loot
+string combat(int eventNum, const string &partyName, array<list<string>, 3> &party);          // Can remove members and add/delete loot
 int randomEvent();                                                                  // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
@@ -231,7 +231,7 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
     return eventDescription;
 }
 
-string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
+string combat(int eventNum, const string &partyName, array<list<string>, 3> &party)
 {
     // This function will return a string that informs players if a member of a party is lost.
     if (eventNum < 2 || eventNum > 5)
@@ -282,7 +282,7 @@ string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
     }
 }
 // This function simulates a quest event that can add/remove quests, members, and loot based on the event number and random chance.
-string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties)
+string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party)
 {
     if (eventNum < 2 || eventNum > 5)
     {

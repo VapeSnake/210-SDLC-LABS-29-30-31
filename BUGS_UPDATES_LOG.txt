@@ -7,6 +7,8 @@
 3) Removed lines of break statements in eventQuest function since return statements end function
 4) Combat() function didn't display case 5.
     FIX: Changed guard at top of function to include eventNum 5
+5) As of 10th commit B. this program only alters first party. Rewriting of parameters for function may be needed.
+    FIX: 
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
