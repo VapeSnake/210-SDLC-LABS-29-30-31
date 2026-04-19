@@ -1,5 +1,6 @@
 ---Bugs---
-
+1) Combat function having issues with switch statement, not compiling.
+  
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.

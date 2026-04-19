@@ -160,6 +160,7 @@ int main()
         int event = randomEvent(); // Generate a random event number to simulate an event occurring in our world.
         cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
     kingdomEvent(event, prosperity, safety); // Test kingdom event function by simulating the generated event.
+    cout << combat(event, parties) << endl; // Test combat function by simulating the generated event.
     displayEvent(event, prosperity, safety, parties); // Display the state of the world after the kingdom event to verify the changes.
     } // End of simulation loop.
 
@@ -239,26 +240,48 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
     return eventDescription;
 }
 
-string combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
+string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
 {
 // This function will return a string that informs players if a member of a party is lost.
     if (eventNum < 2 || eventNum > 4)
     {
         return "This time period was peaceful. No combat occurred.";
     }
+    auto it = parties.begin(); // Iterator to loop through the parties in the map.
+    if (it == parties.end())
+    { // Check if the map is empty before trying to access it.
+        return "There's no one left to fight! All parties have been wiped out.";
+    }
+
     string combatDescription;
     switch (eventNum)
     {
         case 2:
+        {
             combatDescription = "[Combat] A party member was swarmed by goblins.";
+            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+            return combatDescription;
             break;
+        }
         case 3:
+        {
             combatDescription = "[Combat] A party member was too slow for a vampire.";
+            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+            return combatDescription;
             break;
+        }
         case 4:
+        {
             combatDescription = "[Combat] A party member was caught in a trap set by bandits";
+            it -> second[0].pop_back(); // Remove a member from the party's member list to simulate the loss of a member in combat.
+            return combatDescription;
             break;
-        
+        }
+        default: // For any other event numbers, we will assume no combat occurred.
+        {
+            combatDescription = "This time period was peaceful. No combat occurred.";
+            return combatDescription;
+        }
     }
    
 }
