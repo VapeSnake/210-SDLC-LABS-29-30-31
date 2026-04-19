@@ -143,11 +143,6 @@ int main()
             ++it; // Move to the next party in the map.
         }
 
-    // After this, we can use the display function to show all parties,their info, and kingdom status to show initial state of the world.
-    // displayEvent(0); -- This will display the initial state of the world before any events occur. We can use event number 0 for initial event. --
-
-    // --- END OF INITIAL SET UP ---
-
     // LOOP FOR SIMULATION OF EVENTS
     /*
     Our general outline for the simulation loop is as follows:
