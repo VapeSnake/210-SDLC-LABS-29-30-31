@@ -242,12 +242,23 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
 string combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
 // This function will return a string that informs players if a member of a party is lost.
+    if (eventNum < 2 || eventNum > 4)
+    {
+        return "This time period was peaceful. No combat occurred.";
+    }
     string combatDescription;
     switch (eventNum)
     {
         case 2:
             combatDescription = "[Combat] A party member was swarmed by goblins.";
             break;
+        case 3:
+            combatDescription = "[Combat] A party member was too slow for a vampire.";
+            break;
+        case 4:
+            combatDescription = "[Combat] A party member was caught in a trap set by bandits";
+            break;
+        
     }
    
 }
