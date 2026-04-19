@@ -26,7 +26,7 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
 void questEvent(int eventNum, map<string, array<list<string>, 3>> &parties);        // This function simulates a quest event.
 void kingdomEvent(int eventNum, int &prosperity, int &safety);                      // This function simulates a kingdom event that modifies prosperity and safety.
 void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties); // This function uses event numbers to modify parties and kingdom.
-void combat(int eventNum, map<string, array<list<string>, 3>> &parties);            // Can remove members and add/delete loot
+string combat(int eventNum, map<string, array<list<string>, 3>> &parties);            // Can remove members and add/delete loot
 int randomEvent(); // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
@@ -239,8 +239,13 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
     return eventDescription;
 }
 
-void combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
+string combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
+    string combatDescription;
+    switch (eventNum)
+    {
+        
+    }
    
 }
 
