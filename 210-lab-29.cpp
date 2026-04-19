@@ -279,6 +279,12 @@ string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
         return combatDescription;
         break;
     }
+    case 5:
+    {
+        combatDescription = "[Combat] A party was ambushed by a rival faction, but they managed to escape without any losses.";
+        return combatDescription;
+        break;
+    }
     default: // For any other event numbers, we will assume no combat occurred.
     {
         combatDescription = "This time period was peaceful. No combat occurred.";
@@ -309,6 +315,10 @@ string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties)
         {
             it->second[2].push_back("Clear the Goblin Cave"); // Add a new quest to the party's quest list to simulate a new quest arising.
         }
+        else // Adds a comment that party cannot take on the new quest if their quest list is already at max capacity.
+        {
+            questDescription += " However, the party's quest list is already at max capacity, so they cannot take on this new quest.";
+        }
         return questDescription;
         break;
     }
@@ -316,40 +326,59 @@ string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties)
     {
         questDescription = "[Quest Event] A villager has requested help gathering herbs from the forest.";
         if (it->second[2].size() < MAX_QUEST_SIZE) // Check if the party's quest list is not already at max capacity before adding a new quest.
-        
+        {
             it->second[2].push_back("Gather Herbs for the Villager"); // Add a new quest to the party's quest list to simulate a new quest arising.
-        
-        return questDescription;
+            return questDescription;
+        }
+        else // Adds a comment that party cannot take on the new quest if their quest list is already at max capacity.
+        {
+            questDescription += " However, the party's quest list is already at max capacity, so they cannot take on this new quest.";
+            return questDescription;
+        }
         break;
     }
     // For events 4 and 5, we will simulate the completion of a quest, which can remove a quest from the party's quest
     // list and add loot to the party's loot list based on the event number.
     case 4:
     {
-// Check if the party's quest list is not empty before trying to remove a quest.
+        // Check if the party's quest list is not empty before trying to remove a quest.
         if (!it->second[2].empty())
-        {              
+        {
             questDescription = "[Quest Event] A party has completed a quest!";
-            it->second[2].pop_back(); // Remove a quest from the party's quest list to simulate the completion of a quest.
-            it->second[1].push_back("Healing Potion"); // Add new loot to the party's loot list to simulate the reward for completing a quest.
+            it->second[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
+            if (it->second[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
+            {
+                it->second[1].push_back("Healing Potion"); // Add new loot to the party's loot list to simulate the reward for completing a quest.
+            }
+            else // Adds a comment that party cannot receive the new loot if their loot list is already at max capacity.
+            {
+                questDescription += " However, the party's loot list is already at max capacity, so they cannot receive this new loot reward.";
+                return questDescription;
+            }
+            return questDescription;
         }
         break;
     }
     case 5:
     {
-        questDescription = "[Quest Event] A party has completed the quest!";
         if (!it->second[2].empty())
-        {                             // Check if the party's quest list is not empty before trying to remove a quest.
-            it->second[2].pop_back(); // Remove a quest from the party's quest list to simulate the completion of a quest.
+        {
+            questDescription = "[Quest Event] A party has completed a quest!";
+            it->second[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
+            if (it->second[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
+            {
+                it->second[1].push_back("Magic Sword"); // Add new loot to the party's loot list to simulate the reward for completing a quest.
+            }
+            else // Adds a comment that party cannot receive the new loot if their loot list is already at max capacity.
+            {
+                questDescription += " However, the party's loot list is already at max capacity, so they cannot receive this new loot reward.";
+                return questDescription;
+            }
+            return questDescription;
         }
-        if (it->second[1].size() < MAX_LOOT_SIZE)
-        {                                               // Check if the party's loot list is not already at max capacity before adding new loot.
-            it->second[1].push_back("Magic Sword"); // Add new loot to the party's loot list to simulate the reward for completing a quest.
-        }
-        return questDescription;
         break;
     }
-}
+    }
 }
 void kingdomEvent(int eventNum, int &prosperity, int &safety)
 {

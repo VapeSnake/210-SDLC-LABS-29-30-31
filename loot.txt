@@ -1,25 +1,25 @@
-Gold Pouch
-Jeweled Dagger
-Ancient Tome
-Enchanted Ring
-Silver Chalice
-Dragon Scale
-Healing Potion
-Map Fragment
-Runed Amulet
-Obsidian Idol
-Emerald Brooch
-Battleworn Shield
-Magic Scroll
-Sunsteel Sword
-Moonstone
-Traveler’s Cloak
-Elixir of Strength
-Coffer of Coins
-Mystic Lantern
-Cursed Coin
-Royal Seal
-Gemstone Necklace
-Spellcaster’s Staff
-Relic Helmet
-Blessed Charm
+Gold Pouch.
+Jeweled Dagger.
+Ancient Tome.
+Enchanted Ring.
+Silver Chalice.
+Dragon Scale.
+Healing Potion.
+Map Fragment.
+Runed Amulet.
+Obsidian Idol.
+Emerald Brooch.
+Battleworn Shield.
+Magic Scroll.
+Sunsteel Sword.
+Moonstone.
+Traveler’s Cloak.
+Elixir of Strength.
+Coffer of Coins.
+Mystic Lantern.
+Cursed Coin.
+Royal Seal.
+Gemstone Necklace.
+Spellcaster’s Staff.
+Relic Helmet.
+Blessed Charm.
