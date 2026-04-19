@@ -241,10 +241,13 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
 
 string combat(int eventNum, map<string, array<list<string> &, 3>> &parties)
 {
+// This function will return a string that informs players if a member of a party is lost.
     string combatDescription;
     switch (eventNum)
     {
-        
+        case 2:
+            combatDescription = "[Combat] A party member was swarmed by goblins.";
+            break;
     }
    
 }
