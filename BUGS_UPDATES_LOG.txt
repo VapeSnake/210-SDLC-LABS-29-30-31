@@ -2,8 +2,11 @@
 1) Combat function having issues with switch statement, not compiling.
     FIX: Enclosed each case with curly brackets, appeared to be a scope issue. Additionally, value for map had an & symbol, causing a type error when
          using map "parties" as argument.
-2) The main simulation loop only affects the first party in program.
-    FIX: 
+2) Tested case for eventQuest where first party had no quests, string not returned saying so.
+    FIX: Added statement to return at end of function.
+3) Removed lines of break statements in eventQuest function since return statements end function
+4) Combat() function didn't display case 5.
+    FIX: Changed guard at top of function to include eventNum 5
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.

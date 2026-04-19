@@ -234,7 +234,7 @@ string displayEvent(int eventNum, int &prosperity, int &safety, const map<string
 string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
 {
     // This function will return a string that informs players if a member of a party is lost.
-    if (eventNum < 2 || eventNum > 4)
+    if (eventNum < 2 || eventNum > 5)
     {
         return "This time period was peaceful. No combat occurred.";
     }
@@ -270,7 +270,7 @@ string combat(int eventNum, map<string, array<list<string>, 3>> &parties)
     }
     case 5:
     {
-        combatDescription = "[Combat] A party was ambushed by a rival faction, but they managed to escape without any losses.";
+        combatDescription = "[Combat] A party was ambushed by a gnolls, but they managed to escape without any losses.";
         return combatDescription;
         break;
     }
@@ -368,6 +368,7 @@ string questEvent(int eventNum, map<string, array<list<string>, 3>> &parties)
         break;
     }
     }
+    return "No new quests have arisen during this time period."; // Fix to ensure a return statement is reached if no quests are added or completed.
 }
 void kingdomEvent(int eventNum, int &prosperity, int &safety)
 {
