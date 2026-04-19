@@ -2,7 +2,7 @@
 1) Combat function having issues with switch statement, not compiling.
     FIX: Enclosed each case with curly brackets, appeared to be a scope issue. Additionally, value for map had an & symbol, causing a type error when
          using map "parties" as argument.
-2) Case 4 of questEvent function switch statement not causing compile error.
+2) The main simulation loop only affects the first party in program.
     FIX: 
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.

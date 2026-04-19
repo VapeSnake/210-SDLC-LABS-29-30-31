@@ -143,18 +143,7 @@ int main()
         ++it; // Move to the next party in the map.
     }
 
-    // LOOP FOR SIMULATION OF EVENTS
-    /*
-    Our general outline for the simulation loop is as follows:
-    For each time period:
-        For each party:
-        Combat check: If the event is a combat event, we will call the combat function which can remove members and loot
-        from the party based on the event number.
-        Quest event: We will call the questEvent function which can add/remove quests, members, and loot.
-        Kingdom event: We will call the kingdomEvent function which can modify the kingdom's prosperity and safety based on the event number.
-        After processing the events for all parties, we will call the displayEvent function to show the
-        current state of the world, including all parties and the kingdom's prosperity and safety.
-    */
+
     cout << "START OF PROGRAM SIMULATION\n"
          << endl;
     for (int time = 0; time < TIME_PERIODS; time++)
@@ -162,7 +151,7 @@ int main()
         int event = randomEvent();                         // Generate a random event number to simulate an event occurring in our world.
         cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
         kingdomEvent(event, prosperity, safety);           // Test kingdom event function by simulating the generated event.
-        cout << combat(event, parties) << endl;            // Test combat function by simulating the generated event.
+        applyEventEffects(event, parties);                // Test combat and quest event functions by simulating the generated event.
         displayEvent(event, prosperity, safety, parties);  // Display the state of the world after the kingdom event to verify the changes.
     } // End of simulation loop.
 
@@ -401,6 +390,23 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
     default:
         // No change to prosperity or safety for other events.
         break;
+    }
+}
+// This function will help keep our main loop cleaner by calling combat and quest events.
+void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties)
+{
+    //Combat effects will display combat function.
+    string combatResult = combat(eventNum, parties);
+    cout << combatResult << endl;
+    if (!combatResult.empty()) // Check if the combat result string is not empty before trying to display it.
+    {
+        cout << combatResult << endl;
+    }
+    // Quest event effects will display quest event function.
+    string questResult = questEvent(eventNum, parties);
+    if (!questResult.empty()) // Check if the quest result string is not empty before trying to display it.
+    {
+        cout << questResult << endl;
     }
 }
 
