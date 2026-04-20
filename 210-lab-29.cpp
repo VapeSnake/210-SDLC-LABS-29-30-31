@@ -175,7 +175,22 @@ int main()
                 ++it;
             }
         }
-
+        // New party formation check. 20% chance for a new party to form each time period, but only if we are below the max party limit.
+        if (parties.size() < MAX_PARTIES && rand() % 5 == 0)
+        {
+            string newPartyName;
+            do {
+                newPartyName = partyNames[rand() % partyNames.size()]; // Randomly select a new party name from the partyNames vector.
+            } while (parties.find(newPartyName) != parties.end());     // Ensure the new party name is not already in use to avoid duplicates.
+            if (parties.find(newPartyName) == parties.end())
+            { // Check if the new party name is not already in use to avoid duplicates.
+                parties[newPartyName] = array<list<string>, 3>(); // Add a new party to the map with empty lists for members, loot, and quests.
+                parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a random member to the new party.
+                parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a second random member to the new party.
+                parties[newPartyName][2].push_back(quests[rand() % quests.size()]); // Add a random quest to the new party.
+                cout << "[New Party] " << newPartyName << " has formed!\n";
+            }
+        }
         // Display the state of the world after the kingdom event to verify the changes.
         displayEvent(kingdomEventNum, prosperity, safety, parties);
     } // End of simulation loop.

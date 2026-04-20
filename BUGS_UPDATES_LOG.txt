@@ -14,7 +14,10 @@
 7) All parties share same events instead of having random event numbers for each party.
     FIX: Needed to update responsibilities; All functions need to handle a party, while main focuses on iterating through ALL PARTIES.
 8) Disbandment check moved to simulation loop in main since all functions handle individual party data while main handles tracking parties in world.
-
+9) Events don't seem to random, this could be caused my my random() function not being seeded.
+    FIX: 
+10) Sometimes parties are overwritten if new party is created and has same party name as an already established party.
+    FIX: Added do-while loop at party creation check that repeats until a unique party name is found.
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
