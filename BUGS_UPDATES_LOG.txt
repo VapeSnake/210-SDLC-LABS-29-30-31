@@ -1,8 +1,31 @@
 ---Bugs---
-
+1) Combat function having issues with switch statement, not compiling.
+    FIX: Enclosed each case with curly brackets, appeared to be a scope issue. Additionally, value for map had an & symbol, causing a type error when
+         using map "parties" as argument.
+2) Tested case for eventQuest where first party had no quests, string not returned saying so.
+    FIX: Added statement to return at end of function.
+3) Removed lines of break statements in eventQuest function since return statements end function
+4) Combat() function didn't display case 5.
+    FIX: Changed guard at top of function to include eventNum 5
+5) As of 10th commit B. this program only alters first party. Rewriting of parameters for function may be needed.
+    FIX: Updated combat and Quest functions to handle an individual party. Once applyEventEffects is called, program now affects each party.
+6) Updating applyEventEffects function to disband parties with no members but had a segmentation fault.
+    FIX: Undefined behavior from deleting iterator. Updated line 403 to "it = parties.erase(it);"
+7) All parties share same events instead of having random event numbers for each party.
+    FIX: Needed to update responsibilities; All functions need to handle a party, while main focuses on iterating through ALL PARTIES.
+8) Disbandment check moved to simulation loop in main since all functions handle individual party data while main handles tracking parties in world.
+9) Events don't seem to random, this could be caused my my random() function not being seeded.
+    FIX: Revised randomEvent function to include seeded random generator.
+10) Sometimes parties are overwritten if new party is created and has same party name as an already established party.
+    FIX: Added do-while loop at party creation check that repeats until a unique party name is found.
+11) When all parties are gone, no new parties are formed.
+    FIX: Moved New party creation block outside of loop that handles combat and quest events so that regardless of parties left in world, new ones can form.
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.
 - Updated displayEvent() with dashes to visually tidy display of data during each period.
 - Added randomEvent() function that will be used for each time period to generate number that display, kingdom, and quest functions will use to modify
   world and/or party information.
+-Changed return type for combat and questEvent function to string to return descriptions of said scenarios.
+- Combat and QuestEvent functions now show which party loses members or how their quests are updated.
+- Made vectors for storing names, loot, quests global to allow easy access of new recruits and new parties.
