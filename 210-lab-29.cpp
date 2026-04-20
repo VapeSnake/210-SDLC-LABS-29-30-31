@@ -146,8 +146,8 @@ int main() {
                 ++it;
             }
         }
-        // New party formation check. 20% chance for a new party to form each time period, but only if we are below the max party limit.
-        if (parties.size() < MAX_PARTIES && rand() % 5 == 0) {
+        // New party formation check. 40% chance for a new party to form each time period, but only if we are below the max party limit.
+        if (parties.size() < MAX_PARTIES && rand() % 10 < 4) {
             string newPartyName;
             do {
                 newPartyName = partyNames[rand() % partyNames.size()]; // Randomly select a new party name from the partyNames vector.
@@ -366,7 +366,7 @@ void applyEventEffects(int eventNum,
     cout << combat(eventNum, partyName, party) << endl; // Apply combat event effects to the party based on the event number.
     cout << questEvent(eventNum, partyName, party) << endl; // Apply quest event effects to the party based on the event number.
     // Recruitment check. --------------------
-    if (party[0].size() < MAX_PARTY_SIZE && rand() % 5 == 0) // 20% chance for new member to join.
+    if (party[0].size() < MAX_PARTY_SIZE && rand() % 10 < 4) // 40% chance for new member to join.
     {
         string newMember = partyMembers[rand() % partyMembers.size()]; // Randomly select a new member from the partyMembers vector to add to the party.
         party[0].push_back(newMember); // Add the new member to the party.
