@@ -11,7 +11,10 @@
     FIX: Updated combat and Quest functions to handle an individual party. Once applyEventEffects is called, program now affects each party.
 6) Updating applyEventEffects function to disband parties with no members but had a segmentation fault.
     FIX: Undefined behavior from deleting iterator. Updated line 403 to "it = parties.erase(it);"
-7) 
+7) All parties share same events instead of having random event numbers for each party.
+    FIX: Needed to update responsibilities; All functions need to handle a party, while main focuses on iterating through ALL PARTIES.
+8) Disbandment check moved to simulation loop in main since all functions handle individual party data while main handles tracking parties in world.
+
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.

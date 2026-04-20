@@ -15,7 +15,7 @@ const int NUM_EVENTS = 5;     // For alpha, we will just have 5 events to test c
 const int MAX_PARTY_SIZE = 4; // Max party size of 4 members.
 const int MAX_LOOT_SIZE = 10; // Max loot size of 10 items.
 const int MAX_QUEST_SIZE = 3; // Max quest size of 3 quests.
-const int MAX_PARTIES = 5;   // Max number of parties in the world at a time. This will allow for new party formation and disbanding of wiped out parties.
+const int MAX_PARTIES = 5;    // Max number of parties in the world at a time. This will allow for new party formation and disbanding of wiped out parties.
 
 // Global vectors so they can be accessed in functions for random assignment of party names, members, loot, and quests.
 vector<string> partyNames;
@@ -30,11 +30,11 @@ void loadParties(const string &filename, vector<string> &v);
 // Display function.
 string displayEvent(int eventNum, int &prosperity, int &safety, const map<string, array<list<string>, 3>> &parties); // Function receives event number and returns string based on number.
 // Event functions. These can modify parties' and kingdom's variables based on the event number by reference.
-string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party); // This function simulates a quest event.
-void kingdomEvent(int eventNum, int &prosperity, int &safety);                           // This function simulates a kingdom event that modifies prosperity and safety.
-void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties);      // This function uses event numbers to modify parties and kingdom.
-string combat(int eventNum, const string &partyName, array<list<string>, 3> &party);     // Can remove members and add/delete loot
-int randomEvent();                                                                       // This function generates a random event number to simulate the occurrence of events in our world.
+string questEvent(int eventNum, const string &partyName, array<list<string>, 3> &party);      // This function simulates a quest event.
+void kingdomEvent(int eventNum, int &prosperity, int &safety);                                // This function simulates a kingdom event that modifies prosperity and safety.
+void applyEventEffects(int eventNum, const string &partyName, array<list<string>, 3> &party); // This function uses event numbers to modify parties and kingdom.
+string combat(int eventNum, const string &partyName, array<list<string>, 3> &party);          // Can remove members and add/delete loot
+int randomEvent();                                                                            // This function generates a random event number to simulate the occurrence of events in our world.
 
 int main()
 {
@@ -43,9 +43,6 @@ int main()
     int safety = 50;     // Initial safety of the kingdom.
 
     // We can store our txt files into vectors of strings to randomly assign them to parties in the program and to hold display info like events.
-
-
-
 
     /*
     Our first step is to load our world and parties from a file. Our kingdom only has two variables to worry about for now: prosperity and safety.
@@ -150,29 +147,34 @@ int main()
     for (int time = 0; time < TIME_PERIODS; time++)
     {
         cout << "Time Period " << time + 1 << ":\n"
-             << endl; // Display the current time period in the simulation.
-        int kingdomEventNum = randomEvent();                 // Generate a random event number for the kingdom event to simulate the occurrence of an event in the kingdom.
-        cout << "TESTING EVENT NUMBER: " << kingdomEventNum << endl; // Display the generated event number for testing purposes.
+             << endl;                                                // Display the current time period in the simulation.
+        int kingdomEventNum = randomEvent();                         // Generate a random event number for the kingdom event to simulate the occurrence of an event in the kingdom.
+        cout << "Kingdom Event#: " << kingdomEventNum << endl; // Display the generated event number for testing purposes.
         // Test kingdom event function by simulating the generated event.
         kingdomEvent(kingdomEventNum, prosperity, safety);
         // Test combat and quest event functions by simulating the generated event.
-        for (auto &party : parties)
-        {
-            int event = randomEvent();          // Generate a random event number for this party to simulate the occurrence of an event.
-            cout << "TESTING EVENT NUMBER: " << event << " for party " << party.first << endl; // Display the generated event number and party name for testing purposes.
-            applyEventEffects(event, parties); // Apply the effects of the event to each party in the map based on the event number.
-        }
-        // New party formation chance of 20%. Use vectors to give names, members, and quests. No loot for new parties since they are just forming.
-        if (rand() % 5 == 0 && parties.size() < MAX_PARTIES) // Check if a new party should be formed based on chance and MAX_PARTIES limit.
-        {
-            string newPartyName = partyNames[rand() % partyNames.size()]; // Randomly select a party name from the partyNames vector for the new party.
-            parties[newPartyName] = array<list<string>, 3>();             // Initialize the array of lists for the new party in the map.
-            parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a random member to the new party's member list.
-            parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a second random member to the new party's member list.
-            parties[newPartyName][2].push_back(quests[rand() % quests.size()]); // Add a random quest to the new party's quest list.
-            cout << "[Party]A new party, " << newPartyName << ", has formed!" << endl;
-        }
 
+        for (auto it = parties.begin(); it != parties.end();)
+        {
+            const string &partyName = it->first;
+            auto &partyData = it->second;
+
+            int partyEvent = randomEvent();
+
+            applyEventEffects(partyEvent, partyName, partyData);
+
+            // Disband check moved to main loop to ensure it is checked after all events have been applied to the party.
+            if (partyData[0].empty())
+            {
+                cout << "[Disbanded] " << partyName
+                     << " has been wiped out and disbanded.\n";
+                it = parties.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+        }
 
         // Display the state of the world after the kingdom event to verify the changes.
         displayEvent(kingdomEventNum, prosperity, safety, parties);
@@ -405,31 +407,16 @@ void kingdomEvent(int eventNum, int &prosperity, int &safety)
     }
 }
 // This function will help keep our main loop cleaner by calling combat and quest events.
-void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &parties)
+void applyEventEffects(int eventNum, const string &partyName, array<list<string>, 3> &party)
 {
-    for (auto it = parties.begin(); it != parties.end(); ++it)
+    cout << combat(eventNum, partyName, party) << endl;     // Apply combat event effects to the party based on the event number.
+    cout << questEvent(eventNum, partyName, party) << endl; // Apply quest event effects to the party based on the event number.
+    // Recruitment check. --------------------
+    if (party[0].size() < MAX_PARTY_SIZE && rand() % 5 == 0) // 20% chance for new member to join.
     {
-        string partyName = it->first;                               // Get the party name from the map.
-        auto &partyData = it->second;                               // Get the party's data (array of lists) from the map.
-        cout << combat(eventNum, partyName, partyData) << endl;     // Apply combat event effects to the party based on the event number.
-        cout << questEvent(eventNum, partyName, partyData) << endl; // Apply quest event effects to the party based on the event number.
-        // Recruitment check. --------------------
-        if (partyData[0].size() < MAX_PARTY_SIZE && rand() % 5 == 0) // 20% chance for new member to join.
-        {
-            string newMember = partyMembers[rand() % partyMembers.size()]; // Randomly select a new member from the partyMembers vector to add to the party.
-            partyData[0].push_back(newMember);                             // Add the new member to the party.
-            cout << "[Recruitment] " << newMember << " has joined " << partyName << "!" << endl;
-        }
-        // Disband check. --------------------
-        if (partyData[0].empty()) // This is our list of members. If it's empty, the party has no one left and should be disbanded.
-        {                         // Check if the party's member list is empty to determine if the party should be disbanded.
-            cout << "Party " << partyName << " has been wiped out and disbanded!" << endl;
-            it = parties.erase(it); // Remove the party from the map if it has no members left.
-        }
-        else
-        {
-            it++; // Move to the next party in the map if the current party is not disbanded.
-        }
+        string newMember = partyMembers[rand() % partyMembers.size()]; // Randomly select a new member from the partyMembers vector to add to the party.
+        party[0].push_back(newMember);                                 // Add the new member to the party.
+        cout << "[Recruitment] " << newMember << " has joined " << partyName << "!" << endl;
     }
 }
 
