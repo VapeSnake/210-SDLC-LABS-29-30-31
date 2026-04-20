@@ -9,7 +9,9 @@
     FIX: Changed guard at top of function to include eventNum 5
 5) As of 10th commit B. this program only alters first party. Rewriting of parameters for function may be needed.
     FIX: Updated combat and Quest functions to handle an individual party. Once applyEventEffects is called, program now affects each party.
-
+6) Updating applyEventEffects function to disband parties with no members but had a segmentation fault.
+    FIX: Undefined behavior from deleting iterator. Updated line 403 to "it = parties.erase(it);"
+7) 
 ---Updates---
 - kingdomEvent() modifies prosperity and safety by reference.
 - displayEvent() no longer affects any variables, updated to only return descriptions of world state changes.

@@ -396,17 +396,20 @@ void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &partie
         cout << combat(eventNum, partyName, partyData) << endl;     // Apply combat event effects to the party based on the event number.
         cout << questEvent(eventNum, partyName, partyData) << endl; // Apply quest event effects to the party based on the event number.
 
+        
+
         // Disband check
         if (partyData[0].empty()) // This is our list of members. If it's empty, the party has no one left and should be disbanded.
         {                         // Check if the party's member list is empty to determine if the party should be disbanded.
             cout << "Party " << partyName << " has been wiped out and disbanded!" << endl;
-            parties.erase(it); // Remove the party from the map if it has no members left.
+            it = parties.erase(it); // Remove the party from the map if it has no members left.
         }
         else
         {
             it++; // Move to the next party in the map if the current party is not disbanded.
         }
     }
+        // Recruitment check. If a party has less than 2 members, they have a chance to recruit a new member to their party.
 }
 
 int randomEvent()
