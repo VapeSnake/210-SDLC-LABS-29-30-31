@@ -151,19 +151,31 @@ int main()
     {
         cout << "Time Period " << time + 1 << ":\n"
              << endl; // Display the current time period in the simulation.
-
-        int event = randomEvent();                         // Generate a random event number to simulate an event occurring in our world.
-        cout << "TESTING EVENT NUMBER: " << event << endl; // Display the generated event number for testing purposes.
+        int kingdomEventNum = randomEvent();                 // Generate a random event number for the kingdom event to simulate the occurrence of an event in the kingdom.
+        cout << "TESTING EVENT NUMBER: " << kingdomEventNum << endl; // Display the generated event number for testing purposes.
         // Test kingdom event function by simulating the generated event.
-        kingdomEvent(event, prosperity, safety);
+        kingdomEvent(kingdomEventNum, prosperity, safety);
         // Test combat and quest event functions by simulating the generated event.
-        applyEventEffects(event, parties);
-        // New party formation chance. Use vector to initialize name of party and members, loot, and quests can be randomly assigned from the vectors.
-    
+        for (auto &party : parties)
+        {
+            int event = randomEvent();          // Generate a random event number for this party to simulate the occurrence of an event.
+            cout << "TESTING EVENT NUMBER: " << event << " for party " << party.first << endl; // Display the generated event number and party name for testing purposes.
+            applyEventEffects(event, parties); // Apply the effects of the event to each party in the map based on the event number.
+        }
+        // New party formation chance of 20%. Use vectors to give names, members, and quests. No loot for new parties since they are just forming.
+        if (rand() % 5 == 0 && parties.size() < MAX_PARTIES) // Check if a new party should be formed based on chance and MAX_PARTIES limit.
+        {
+            string newPartyName = partyNames[rand() % partyNames.size()]; // Randomly select a party name from the partyNames vector for the new party.
+            parties[newPartyName] = array<list<string>, 3>();             // Initialize the array of lists for the new party in the map.
+            parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a random member to the new party's member list.
+            parties[newPartyName][0].push_back(partyMembers[rand() % partyMembers.size()]); // Add a second random member to the new party's member list.
+            parties[newPartyName][2].push_back(quests[rand() % quests.size()]); // Add a random quest to the new party's quest list.
+            cout << "[Party]A new party, " << newPartyName << ", has formed!" << endl;
+        }
 
 
         // Display the state of the world after the kingdom event to verify the changes.
-        displayEvent(event, prosperity, safety, parties);
+        displayEvent(kingdomEventNum, prosperity, safety, parties);
     } // End of simulation loop.
 
     return 0;
@@ -298,7 +310,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     {
     case 2:
     {
-        questDescription = "[Quest Event] " + partyName + " has a new quest: Clear the Goblin Cave.";
+        questDescription = "[Quest] " + partyName + " has a new quest: Clear the Goblin Cave.";
         if (party[2].size() < MAX_QUEST_SIZE) // Check if the party's quest list is not already at max capacity before adding a new quest.
         {
             party[2].push_back("Clear the Goblin Cave"); // Add a new quest to the party's quest list to simulate a new quest arising.
@@ -312,7 +324,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     }
     case 3:
     {
-        questDescription = "[Quest Event] " + partyName + " has a new quest: Gather Herbs for the Villager.";
+        questDescription = "[Quest] " + partyName + " has a new quest: Gather Herbs for the Villager.";
         if (party[2].size() < MAX_QUEST_SIZE) // Check if the party's quest list is not already at max capacity before adding a new quest.
         {
             party[2].push_back("Gather Herbs for the Villager"); // Add a new quest to the party's quest list to simulate a new quest arising.
@@ -332,7 +344,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
         // Check if the party's quest list is not empty before trying to remove a quest.
         if (!party[2].empty())
         {
-            questDescription = "[Quest Event] " + partyName + " has completed a quest!";
+            questDescription = "[Quest] " + partyName + " has completed a quest!";
             party[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
             if (party[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
             {
@@ -351,7 +363,7 @@ string questEvent(int eventNum, const string &partyName, array<list<string>, 3> 
     {
         if (!party[2].empty())
         {
-            questDescription = "[Quest Event] " + partyName + " has completed a quest!";
+            questDescription = "[Quest] " + partyName + " has completed a quest!";
             party[2].pop_back();                 // Remove a quest from the party's quest list to simulate the completion of a quest.
             if (party[1].size() < MAX_LOOT_SIZE) // Check if the party's loot list is not already at max capacity before adding new loot.
             {
@@ -401,15 +413,14 @@ void applyEventEffects(int eventNum, map<string, array<list<string>, 3>> &partie
         auto &partyData = it->second;                               // Get the party's data (array of lists) from the map.
         cout << combat(eventNum, partyName, partyData) << endl;     // Apply combat event effects to the party based on the event number.
         cout << questEvent(eventNum, partyName, partyData) << endl; // Apply quest event effects to the party based on the event number.
-        // Recruitment check.
+        // Recruitment check. --------------------
         if (partyData[0].size() < MAX_PARTY_SIZE && rand() % 5 == 0) // 20% chance for new member to join.
         {
             string newMember = partyMembers[rand() % partyMembers.size()]; // Randomly select a new member from the partyMembers vector to add to the party.
-            partyData[0].push_back(newMember);                                  // Add the new member to the party.
+            partyData[0].push_back(newMember);                             // Add the new member to the party.
+            cout << "[Recruitment] " << newMember << " has joined " << partyName << "!" << endl;
         }
-        
-
-        // Disband check
+        // Disband check. --------------------
         if (partyData[0].empty()) // This is our list of members. If it's empty, the party has no one left and should be disbanded.
         {                         // Check if the party's member list is empty to determine if the party should be disbanded.
             cout << "Party " << partyName << " has been wiped out and disbanded!" << endl;

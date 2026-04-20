@@ -20,4 +20,4 @@
   world and/or party information.
 -Changed return type for combat and questEvent function to string to return descriptions of said scenarios.
 - Combat and QuestEvent functions now show which party loses members or how their quests are updated.
--
+- Made vectors for storing names, loot, quests global to allow easy access of new recruits and new parties.
